@@ -1,4 +1,4 @@
-# TLegene：Polygenic prediction for underrepresented populations through transfer learning by utilizing shared genetic similarity shared with European populations
+# transPGS：Polygenic prediction for underrepresented populations through transfer learning by utilizing shared genetic similarity shared with European populations
 
 # Introduction
 The past two decades have witnessed remarkable advance of genome-wide association studies (GWASs) in identifying associated loci (mainly single-nucleotide polymorphisms [SNPs]) for traits and diseases. Because 
