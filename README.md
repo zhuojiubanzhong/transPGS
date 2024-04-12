@@ -28,39 +28,38 @@ we demonstrate that transPGS represents a flexible and effective polygenic score
 # Example
 ```ruby
 library(data.table)
-library(harmonicmeanp)
-source("TLegene.R")
-source("null_model_fit.R")
-source("numerical_approximation.R")
-data = read.table("data.txt",head=T)
-weights = read.table("weights.txt",head=T)
-data<-as.matrix(data)
-weights<-as.matrix(weights)
-p=dim(data)[2]-3
-result=TLegene(data,d=2,p,R=1,
-               outcome_type="Continuous",
-               weight_method= "User",
-               user_weight = weights)
+library(SKAT)
+library(glmnet)
+library(MASS)
+library(Rcpp)
+library(RcppArmadillo)
+library(doParallel)
+sourceCpp("lmm_PXEM.cpp")
+source("transPGS.R")
 
-po=result$pvalue[3]
-pa=result$pvalue[4]
-pf=result$pvalue[5]
-ph<-cbind(po,pa,pf)
-phmp<-as.vector(c(p.hmp(ph,L=length(ph))))
-$pvalue
 
-  pvalue.TLegene-oScore   4.93183049954382e-10 
+######T is the GWAS summary statistics for the target and auxiliary populations, including marginal effects as well as standard errors.
+######G1 is the target population genotype data (matched to 1000 Genomes Project).
+######G2 is the auxiliary population genotype data (matched to 1000 Genomes Project).
 
-  pvalue.TLegene-aScore   2.86890693215321e-16
+T <- data.frame(fread("/public/home/yiyangzhu/qianyi/lipid/function/data.txt"))
+G1 <- data.frame(fread("/public/home/yiyangzhu/qianyi/lipid/function/target_geno.txt"))
+G2 <- data.frame(fread("/public/home/yiyangzhu/qianyi/lipid/function/auxiliary_geno.txt"))
+a1 <- transPGS(T,G1,G2)
 
-  pvalue.TLegene-fScore  2.94312008307861e-15
-
-  pvalue.TLegene-HMP     7.8422646713986e-16
-                             
+head(a1)
+  origina_beta       tl_beta
+1 -0.006349755  0.0000894057
+2  0.076720675  0.0008204309
+3 -0.060972709 -0.0009179851
+4 -0.057363847 -0.0054121625
+5  0.180453372  0.0069451656
+6  0.020002770  0.0009623524
+        
 ```
   
 # Cite
-Shuo Zhang<sup>$</sup>, Zhou Jiang<sup>$</sup> and Ping Zeng<sup>#</sup> (2022). Incorporating genetic similarity of auxiliary samples into eGene identification under the transfer learning framework.
+Yiyang Zhu<sup>$</sup>, Wenying Chen<sup>$</sup> , Wenying Chen<sup>$</sup> and Ping Zeng<sup>#</sup> (2024). Polygenic prediction for underrepresented populations through transfer learning by utilizing shared genetic similarity shared with European populations.
 
 # Contact
 We are very grateful to any questions, comments, or bugs reports; and please contact Ping Zeng via zpstat@xzhmu.edu.cn.
