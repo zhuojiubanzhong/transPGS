@@ -1,29 +1,29 @@
-# TLegene：Incorporating genetic similarity of auxiliary samples into eGene identification under the transfer learning framework
+# TLegene：Polygenic prediction for underrepresented populations through transfer learning by utilizing shared genetic similarity shared with European populations
 
 # Introduction
-TLegene is a R procedure for borrowing the idea of transfer learning to integrate useful genetic information available from external studies for multilocus-based eGene 
-identification method. In TLegene, the identification of eGene consists of two components: the first component represents the indirect influence of the auxiliary study 
-after transfer learning, and the second component represents the direct effect of the target study.
+The past two decades have witnessed remarkable advance of genome-wide association studies (GWASs) in identifying associated loci (mainly single-nucleotide polymorphisms [SNPs]) for traits and diseases. Because 
+most human phenotypes are affected by hundreds or thousands of genetic variants, a single variant typically exerts quite weak impact compared to traditional non-genetic clinical factors and thereby only explains 
+a very small proportion of phenotypic variation. However, the combination of multiple SNPs weighted by their effect sizes by creating a polygenic score (PGS) usually better reflects the genetic susceptibility to 
+a disease. Such score represents an independent risk factor, which is as equally strong or much stronger than many established clinical risk factors, and has gained popularity to quantify individual's diseases risk.
+It is now widely recognized that PGS together with clinical and environmental data can improve the possibility for risk stratification and early disease detection and even pave a road towards personalized intervention. 
+As a result, PGS has been extensively utilized to many diseases such as cardiometabolic diseases.
 
-Specifically, let e be a n by 1 vector of gene expression level on n individuals in the target study, X is a n by p matrix for covariates, G is a n by m matrix for 
-genotypes of cis-SNPs for for a given gene in the target study, θ quantifies the association between the gene expression level and the weighted genetic score Gγ which 
-is the indirect effect of auxiliary study, b quantifies the association between gene expression level and genotypes G which is the direct effect not completely 
-interpreted by auxiliary data and α quantifies a p-vector of fixed effect sizes for clinical covariates. We relate e, Gγ, X and G by a linear mixed model:
-<p align="center">
-e= Xα + (Gγ) × θ + Gb,  b ~ N(0, τ)
-</p>
-Above, τ is the genetic variance which is the direct effect not completely interpreted by auxiliary data.
+However, current GWASs have been predominantly conducted in individuals of European (EUR) ancestry, with 94.6% in the EUR population and only 3.7% in the East Asian (EAS) population and 0.2% in the African (AFR) population.
+Due to this underrepresentation, the performance of PGS behaves poorly in non-EUR populations, particularly in populations of AFR ancestry. For example, the PGS accuracy reduced approximately 78% across multiple traits in individuals of AFR ancestry
+relative to those of EUR ancestry; similarly, the accuracy of PGS across traits was on average 40% lower in individuals of South Asian ancestry and 5% lower in individuals of EAS ancestry compared to that in those of EUR ancestry. The poor transferability 
+of PGS derived from EUR ancestry data to non-EUR populations leads to great concern in health disparities . Therefore, there is an urgent need to develop novel PGS methods which can exploit data across diverse populations to better perform genetic risk prediction.
 
-TLegene examines the association of G and Gγ with e (while controlling for X) by testing for:
-<p align="center">
-H0: θ = 0 and b = 0 <==> H0: θ = 0 and τ = 0
-</p>
-This is a joint test which requires simultaneously assessing the significance of both fixed effects and random effects: the first part of H0 evaluates the indirect 
-influence of auxiliary samples, whereas the second part assesses the direct impact of target samples. Briefly, we derive the test statistic for θ under H0: θ = 0 and τ 
-= 0 as usual, while we derive the score statistic for τ under τ = 0 but without the constraint of θ = 0. By doing this, we ensure that these two statistics are 
-independent. This strategy substantially eases the development of test statistics for the joint test. In conclusion, under this framework two asymptotically 
-independent statistics can be derived. Finally, in order to aggregate the two independent test statistics, we propose three p-value combination approaches (i.e. 
-TLegene-oScore, TLegene-aScore, and TLegene-fScore).
+Increasing sample sizes in non-EUR GWASs for the understanding of genetic architecture underlying complex phenotypes is a necessary road for understudied populations such as EAS and AFR; but this requires plenty of expense and time. 
+Alternatively, integrating existing knowledge available from EURs into non-EURs by novel approaches may be another promising strategy to improve the portability of PGS. Actually, there is a deal of evidence that significant genetic
+similarity exists between the EUR and non-EUR populations at both SNP and gene levels. Such genetic similarity provides theoretical and biological support for trans-ethnic leveraging of EUR information into non-EUR studies.
+Currently, there are a range of trans-ethnic statistical methods that help enhance the transferability of PGS across distinct ancestral groups; however, how to optimally integrate EUR information into non-EUR genetic research remains unknown.
+
+Recently, transfer learning has been applied in various machine learning fields for knowledge transfer from informative auxiliary samples into target samples to improve learning ability in the target task. 
+By borrowing this idea, we here propose transPGS, a novel transfer learning genetic prediction method with the P+T approach as the baseline model. Using the effect sizes of the baseline model as initial values, 
+transPGS leverages trans-ethnic genetic similarity shared with the EUR population (i.e., auxiliary samples) to adapt the effect sizes in the non-EUR populations (i.e., target samples) such as AFR or EAS.
+To illustrate the effectiveness of transPGS, we conduct extensive simulations and confirm that the predictive ability of transPGS is enhanced in non-EUR as the increased of trans-ethnic similarity. 
+Then, we apply it to ten phenotypes with individual-level data from the UK Biobank (UKB) and the Kaiser Permanente/UCSF Genetic Epidemiology of Adult Health and Ageing Study.Overall, through simulations and real data applications,
+we demonstrate that transPGS represents a flexible and effective polygenic score method, which can improve genetic prediction capability for individuals of non-EUR ancestry.
 
 # Example
 ```ruby
