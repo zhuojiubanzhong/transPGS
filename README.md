@@ -1,14 +1,7 @@
 # transPGS：Polygenic prediction for underrepresented populations through transfer learning by utilizing shared genetic similarity shared with European populations
 
 # Introduction
-The past two decades have witnessed remarkable advance of genome-wide association studies (GWASs) in identifying associated loci (mainly single-nucleotide polymorphisms [SNPs]) for traits and diseases. Because 
-most human phenotypes are affected by hundreds or thousands of genetic variants, a single variant typically exerts quite weak impact compared to traditional non-genetic clinical factors and thereby only explains 
-a very small proportion of phenotypic variation. However, the combination of multiple SNPs weighted by their effect sizes by creating a polygenic score (PGS) usually better reflects the genetic susceptibility to 
-a disease. Such score represents an independent risk factor, which is as equally strong or much stronger than many established clinical risk factors, and has gained popularity to quantify individual's diseases risk.
-It is now widely recognized that PGS together with clinical and environmental data can improve the possibility for risk stratification and early disease detection and even pave a road towards personalized intervention. 
-As a result, PGS has been extensively utilized to many diseases such as cardiometabolic diseases.
-
-However, current GWASs have been predominantly conducted in individuals of European (EUR) ancestry, with 94.6% in the EUR population and only 3.7% in the East Asian (EAS) population and 0.2% in the African (AFR) population.
+Current GWASs have been predominantly conducted in individuals of European (EUR) ancestry, with 94.6% in the EUR population and only 3.7% in the East Asian (EAS) population and 0.2% in the African (AFR) population.
 Due to this underrepresentation, the performance of PGS behaves poorly in non-EUR populations, particularly in populations of AFR ancestry. For example, the PGS accuracy reduced approximately 78% across multiple traits in individuals of AFR ancestry
 relative to those of EUR ancestry; similarly, the accuracy of PGS across traits was on average 40% lower in individuals of South Asian ancestry and 5% lower in individuals of EAS ancestry compared to that in those of EUR ancestry. The poor transferability 
 of PGS derived from EUR ancestry data to non-EUR populations leads to great concern in health disparities . Therefore, there is an urgent need to develop novel PGS methods which can exploit data across diverse populations to better perform genetic risk prediction.
@@ -18,12 +11,10 @@ Alternatively, integrating existing knowledge available from EURs into non-EURs 
 similarity exists between the EUR and non-EUR populations at both SNP and gene levels. Such genetic similarity provides theoretical and biological support for trans-ethnic leveraging of EUR information into non-EUR studies.
 Currently, there are a range of trans-ethnic statistical methods that help enhance the transferability of PGS across distinct ancestral groups; however, how to optimally integrate EUR information into non-EUR genetic research remains unknown.
 
-Recently, transfer learning has been applied in various machine learning fields for knowledge transfer from informative auxiliary samples into target samples to improve learning ability in the target task. 
-By borrowing this idea, we here propose transPGS, a novel transfer learning genetic prediction method with the P+T approach as the baseline model. Using the effect sizes of the baseline model as initial values, 
-transPGS leverages trans-ethnic genetic similarity shared with the EUR population (i.e., auxiliary samples) to adapt the effect sizes in the non-EUR populations (i.e., target samples) such as AFR or EAS.
-To illustrate the effectiveness of transPGS, we conduct extensive simulations and confirm that the predictive ability of transPGS is enhanced in non-EUR as the increased of trans-ethnic similarity. 
-Then, we apply it to ten phenotypes with individual-level data from the UK Biobank (UKB) and the Kaiser Permanente/UCSF Genetic Epidemiology of Adult Health and Ageing Study.Overall, through simulations and real data applications,
-we demonstrate that transPGS represents a flexible and effective polygenic score method, which can improve genetic prediction capability for individuals of non-EUR ancestry.
+In the machine learning filed, transfer learning is recognized as a novel technique that enables the utilization of knowledge acquired from auxiliary samples to enhance learning capability in target samples, 
+which are distinct yet related to the former (Bastani, 2021; Li, et al., 2023; Lu, et al., 2023; Pan and Yang, 2009; Tian, et al., 2022; Zhao, et al., 2022). By borrowing the idea of transfer learning,
+we propose transPGS to boost the genetic prediction accuracy in non-EUR populations by leveraging trans-ethnic genetic similarity shared with the EUR population. Theoretically, transPGS helps capture genetic information across diverse 
+ancestral populations and renders the prediction more efficiently and accurately (Figure 1).
 
 # Example
 ```ruby
@@ -35,7 +26,13 @@ library(Rcpp)
 library(RcppArmadillo)
 library(doParallel)
 sourceCpp("lmm_PXEM.cpp")
-source("transPGS.R")
+source("Individual-level_transPGS.R")
+source("Summary_level_transPGS.R")
+
+
+
+
+
 
 
 ######T is the GWAS summary statistics for the target and auxiliary populations, including marginal effects as well as standard errors.
